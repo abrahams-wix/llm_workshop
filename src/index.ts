@@ -7,6 +7,21 @@ export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		const url = new URL(request.url);
 
+		if (request.method === 'GET' && url.pathname === '/') {
+			const runningMessage = 'Dev Showdown Cloudflare Starter is running.';
+			const message = env.DEV_SHOWDOWN_API_KEY
+				? runningMessage
+				: [runningMessage, 'DEV_SHOWDOWN_API_KEY is missing.'].join(
+						'\n',
+					);
+
+			return new Response(message, {
+				headers: {
+					'Content-Type': 'text/plain; charset=utf-8',
+				},
+			});
+		}
+
 		if (request.method !== 'POST' || url.pathname !== '/api') {
 			return new Response('Not Found', { status: 404 });
 		}
@@ -51,7 +66,7 @@ export default {
 				default:
 					return new Response('Solver not found', { status: 404 });
 			}
-		},
+	},
 	} satisfies ExportedHandler<Env>;
 
 function createWorkshopLlm(apiKey: string, interactionId: string) {
