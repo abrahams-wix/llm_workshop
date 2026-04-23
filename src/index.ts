@@ -60,6 +60,8 @@ export default {
 					prompt: payload.question,
 				});
 
+
+
 				return Response.json({
 					answer: result.text || 'N/A',
 				});
@@ -73,6 +75,10 @@ export default {
 					model: workshopLlm.chatModel('deli-4'),
 					system: 'You will be given a human-readable description of a product and must return the extracted data as a JSON object. The wording and sentence order will vary, but every required fact is present in the text.',
 					prompt: payload.question,
+				});
+
+				return Response.json({
+					answer: result.text || 'N/A',
 				});
 			}
 				default:
